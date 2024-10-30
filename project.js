@@ -3,6 +3,8 @@ const prompt = require("prompt-sync")();
 const ROWS = 3;
 const COLS = 3;
 
+
+// Erstellung eines Objekts: Zuweisung mit einem Schlüssel{A} und einem Wert {2}, ein Objekt ist kein Array!
 const symbolsCount = {
     'A': 2,
     'B': 4,
@@ -20,8 +22,9 @@ const symbolsValues = {
 const deposit = () => {
     while (true) {
         const depositAmount = prompt('Enter a deposit amount: ');
+        // parseFloat: Umwandlung von Input in eine Gleitpunktzahl
         const numberDepositAmount = parseFloat(depositAmount);
-
+        //NaN: not a number
         if (isNaN(numberDepositAmount) || numberDepositAmount <= 0) {
             console.log('Invalid deposit amount, try again!');
         } else {
@@ -58,19 +61,26 @@ const getBet = (balance, lines) => {
 
 const spin = () => {
     const symbols = [];
+    // Object.entries(symbolsCount) wandelt das symbolsCount-Objekt in ein Array von Arrays um. 
+    //Jedes innere Array enthält ein Schlüssel-Wert-Paar des Objekts: Ausgabe: [['A', 2], ['B', 4], ['C', 6], ['D', 8]]
     for (const [symbol, count] of Object.entries(symbolsCount)) {
         for (let i = 0; i < count; i++) {
+            //die push funktion, fügt das jeweilige symbol in das array symbols[]
             symbols.push(symbol);
         }
     }
     const reels = [];
     for (let i = 0; i < COLS; i++) {
         reels.push([]);
+        // ... -> spread Operator: listet Elemente eines Arrays einzeln auf. Es wird eine Kopie von dem Array Symbols erstellet und keine Referenz.
+        // -> keine Änderung an dem originalem Array
         const reelSymbols = [...symbols];
         for (let j = 0; j < ROWS; j++) {
+            //.lenghh gibt die länge des Arrays zurück 
             const randomIndex = Math.floor(Math.random() * reelSymbols.length);
             const selectedSymbol = reelSymbols[randomIndex];
             reels[i].push(selectedSymbol);
+            // splice(): entfernt Elemente ab einem bestimmten Index
             reelSymbols.splice(randomIndex, 1);
         }
     }
